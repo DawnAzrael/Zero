@@ -196,7 +196,38 @@ namespace 音迷
             string url7 = "http://music.migu.cn/v3/search?keyword=" + music_search_name.Text;
             System.Diagnostics.Process.Start(url7);
         }
-
+        private void todayRecomend()
+        {
+            try
+            {
+                string rec_sql = "SELECT songname, singer, link FROM RecommendRes.todayrecommend;";
+                if (con == null)
+                {
+                    con = new MySql.Data.MySqlClient.MySqlConnection(sqlstr);
+                    con.Open();
+                }
+                if (adapter2 == null)
+                {
+                    adapter2 = new MySql.Data.MySqlClient.MySqlDataAdapter(rec_sql, con);
+                }
+                if (ds2 == null)
+                {
+                    ds2 = new System.Data.DataSet();
+                }
+                ds2.Clear();
+                adapter2.Fill(ds2, "rec");
+                if (dt2 == null)
+                {
+                    dt2 = ds2.Tables["rec"];
+                }
+                Music_Recommend.ItemsSource = dt2.DefaultView;
+                con.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Fatal Error For Today Recoomend！");
+            }
+        }
         private void recommend_songlist_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -235,14 +266,16 @@ namespace 音迷
                         }
                         else
                         {
-                            MessageBox.Show("无推荐结果哦，请检查您的歌单或者虾米ID！");
+                            MessageBox.Show("无推荐结果哦，试试今日推荐的音乐吧！");
+                            todayRecomend();
                         }
                     }
                 }
             }
             catch
             {
-                MessageBox.Show("无推荐结果哦，请检查您的歌单或者虾米ID！");
+                MessageBox.Show("无推荐结果哦，试试今日推荐的音乐吧！");
+                todayRecomend();
             }
         }
     }
