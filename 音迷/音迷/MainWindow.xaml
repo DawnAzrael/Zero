@@ -16,7 +16,7 @@
                         <!-->音迷世界<!-->
                         <avalon:LayoutAnchorable Title="音迷世界">
                             <StackPanel>
-                                <TextBox x:Name="xiami_userid" Height="23" TextWrapping="Wrap" Text="在此输入虾米ID" Margin="0,0,655,0"/>
+                                <TextBox x:Name="xiami_userid" Height="23" TextWrapping="Wrap" Text="在此输入虾米ID" GotFocus="Xiami_userid_GotFocus" Margin="0,0,655,0"/>
                                 <Button x:Name="sychro_songlist" Content="同步歌单" Height="24" Click="Sychro_songlist_Click" Margin="138,-23.8,531,0"/>
 
                                 <DataGrid x:Name="Music_World" IsReadOnly="True" RenderTransformOrigin="0.139,0.45" Margin="0,0,-1,-1" Height="288">
@@ -54,7 +54,7 @@
                         </avalon:LayoutAnchorable>
                         <avalon:LayoutAnchorable Title="音迷推荐">
                             <StackPanel>
-                                <TextBox x:Name="xmid" Height="23" TextWrapping="Wrap" Text="在此输入虾米ID" Margin="0,0,655,0"/>
+                                <TextBox x:Name="xmid" Height="23" TextWrapping="Wrap" Text="在此输入虾米ID" GotFocus="Xmid_GotFocus" Margin="0,0,655,0"/>
                                 <Button x:Name="recommend_songlist" Content="音推荐" Height="24" Click="recommend_songlist_Click" Margin="138,-23.8,531,0"/>
 
                                 <DataGrid x:Name="Music_Recommend" IsReadOnly="True" RenderTransformOrigin="0.139,0.45" Margin="0,0,-1,-1" Height="288">
@@ -78,7 +78,7 @@
                         <avalon:LayoutAnchorable Title="音乐搜索">
                             <GroupItem>
                                 <StackPanel>
-                                    <TextBox x:Name="music_search_name" Height="23" TextWrapping="Wrap" Text="在此输入歌曲名称……" Margin="0,0,655,0"/>
+                                    <TextBox x:Name="music_search_name" Height="23" TextWrapping="Wrap" Text="在此输入歌曲名称……" GotFocus="Music_search_name_GotFocus" Margin="0,0,655,0"/>
                                     <Button x:Name="xiami_music_search" HorizontalAlignment="Left" Margin="50,0,-23,0" Click="Xiami_music_search_Click" VerticalAlignment="Top" Width="123" Height="35">
                                         <Button.Background>
                                             <ImageBrush ImageSource="/resource/xiamilogo.png"></ImageBrush>

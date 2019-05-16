@@ -30,15 +30,21 @@ namespace 音迷
         //string sqlstr = "Data Source=192.168.1.5;User ID=zero;Password=Azrael.134;DataBase=RecommendRes;Charset=utf8;";
         private string sqlstr = "Server=192.168.199.201;Database=RecommendRes;Uid=zero;Pwd=Azrael.134;";
         MySql.Data.MySqlClient.MySqlConnection con;
+        MySql.Data.MySqlClient.MySqlConnection con1;
+        MySql.Data.MySqlClient.MySqlConnection con2;
+        MySql.Data.MySqlClient.MySqlConnection con3;
         MySql.Data.MySqlClient.MySqlDataAdapter adapter;
         MySql.Data.MySqlClient.MySqlDataAdapter adapter1;
         MySql.Data.MySqlClient.MySqlDataAdapter adapter2;
+        MySql.Data.MySqlClient.MySqlDataAdapter adapter3;
         System.Data.DataSet ds;
         System.Data.DataTable dt;
         System.Data.DataSet ds1;
         System.Data.DataTable dt1;
         System.Data.DataSet ds2;
         System.Data.DataTable dt2;
+        System.Data.DataSet ds3;
+        System.Data.DataTable dt3;
 
         private void UpdateMySQLData()
         {
@@ -133,27 +139,35 @@ namespace 音迷
                 RunPythonScript(sArguments, "-u", strArr);
                 // 然后 db // 再然后 show
                 string sychro_sql = "SELECT song_name, singer, link FROM xiami" + xiami_userid.Text;
-                if (con == null)
+                con1 = null;
+                if (con1 == null)
                 {
-                    con = new MySql.Data.MySqlClient.MySqlConnection(sqlstr);
-                    con.Open();
+                    con1 = new MySql.Data.MySqlClient.MySqlConnection(sqlstr);
+                    con1.Open();
                 }
+                adapter1 = null;
                 if (adapter1 == null)
                 {
-                    adapter1 = new MySql.Data.MySqlClient.MySqlDataAdapter(sychro_sql, con);
+                    adapter1 = new MySql.Data.MySqlClient.MySqlDataAdapter(sychro_sql, con1);
                 }
+                ds1 = null;
                 if (ds1 == null)
                 {
                     ds1 = new System.Data.DataSet();
                 }
                 ds1.Clear();
                 adapter1.Fill(ds1, "xiami");
+                dt1 = null;
                 if (dt1 == null)
                 {
                     dt1 = ds1.Tables["xiami"];
                 }
                 Music_World.ItemsSource = dt1.DefaultView;
-                con.Close();
+                con1.Close();
+                if (dt1.DefaultView.Count == 0)
+                {
+                    MessageBox.Show("查询无结果，请检查您的输入！");
+                }
             }
             catch
             {
@@ -201,27 +215,32 @@ namespace 音迷
             try
             {
                 string rec_sql = "SELECT songname, singer, link FROM RecommendRes.todayrecommend;";
-                if (con == null)
+                con3 = null;
+                if (con3 == null)
                 {
-                    con = new MySql.Data.MySqlClient.MySqlConnection(sqlstr);
-                    con.Open();
+                    con3 = new MySql.Data.MySqlClient.MySqlConnection(sqlstr);
+                    con3.Open();
                 }
-                if (adapter2 == null)
+                adapter3 = null;
+                if (adapter3 == null)
                 {
-                    adapter2 = new MySql.Data.MySqlClient.MySqlDataAdapter(rec_sql, con);
+                    adapter3 = new MySql.Data.MySqlClient.MySqlDataAdapter(rec_sql, con3);
                 }
-                if (ds2 == null)
+                ds3 = null;
+                if (ds3 == null)
                 {
-                    ds2 = new System.Data.DataSet();
+                    ds3 = new System.Data.DataSet();
                 }
-                ds2.Clear();
-                adapter2.Fill(ds2, "rec");
-                if (dt2 == null)
+                ds3.Clear();
+                adapter3.Fill(ds3, "rec");
+                dt3 = null;
+                if (dt3 == null)
                 {
-                    dt2 = ds2.Tables["rec"];
+                    dt3 = ds3.Tables["rec"];
                 }
-                Music_Recommend.ItemsSource = dt2.DefaultView;
-                con.Close();
+                Music_Recommend.ItemsSource = dt3.DefaultView;
+
+                con3.Close();
             }
             catch
             {
@@ -242,27 +261,37 @@ namespace 音迷
                         if (res == "107\n")
                         {
                             string rec_sql = "SELECT songname, singer, link FROM `" + xmid.Text + "_rec`";
-                            if (con == null)
+                            con2 = null;
+                            if (con2 == null)
                             {
-                                con = new MySql.Data.MySqlClient.MySqlConnection(sqlstr);
-                                con.Open();
+                                con2 = new MySql.Data.MySqlClient.MySqlConnection(sqlstr);
+                                con2.Open();
                             }
+                            adapter2 = null;
                             if (adapter2 == null)
                             {
-                                adapter2 = new MySql.Data.MySqlClient.MySqlDataAdapter(rec_sql, con);
+                                adapter2 = new MySql.Data.MySqlClient.MySqlDataAdapter(rec_sql, con2);
                             }
+                            ds2 = null;
                             if (ds2 == null)
                             {
                                 ds2 = new System.Data.DataSet();
                             }
                             ds2.Clear();
                             adapter2.Fill(ds2, "rec");
+                            dt2 = null;
                             if (dt2 == null)
                             {
                                 dt2 = ds2.Tables["rec"];
                             }
                             Music_Recommend.ItemsSource = dt2.DefaultView;
-                            con.Close();
+                            if (dt2.DefaultView.Count == 0)
+                            {
+                                MessageBox.Show("无推荐结果哦，试试今日推荐的音乐吧！");
+                                todayRecomend();
+                            }
+                            con2.Close();
+                            
                         }
                         else
                         {
@@ -277,6 +306,21 @@ namespace 音迷
                 MessageBox.Show("无推荐结果哦，试试今日推荐的音乐吧！");
                 todayRecomend();
             }
+        }
+
+        private void Xiami_userid_GotFocus(object sender, RoutedEventArgs e)
+        {
+            xiami_userid.Text = "";
+        }
+
+        private void Xmid_GotFocus(object sender, RoutedEventArgs e)
+        {
+            xmid.Text = "";
+        }
+
+        private void Music_search_name_GotFocus(object sender, RoutedEventArgs e)
+        {
+            music_search_name.Text = "";
         }
     }
 }
